@@ -13,15 +13,15 @@ cheatsheets all here.
 *** Some personal information
 
 #+BEGIN_SRC emacs-lisp
-(setq user-full-name "Pepe García"
-      user-mail-address "jl.garhdez@gmail.com")
+(setq user-full-name "Jeff Hemminger"
+      user-mail-address "jeff.hemminger@gmail.com")
 #+END_SRC
 
 *** Help emacs find my executables
 
 #+BEGIN_SRC emacs-lisp
 (setq exec-path (append exec-path '("/usr/local/bin")))
-(setq exec-path (append exec-path '("/Users/pepe/.local/bin")))
+(setq exec-path (append exec-path '("/Users/jeff/bin")))
 #+END_SRC
 
 *** plumbing
