@@ -506,6 +506,10 @@ cheatsheets all here.
    number of languages previously:
 
 #+BEGIN_SRC emacs-lisp
+(use-package ensime
+  :ensure t
+  :pin melpa-stable)
+
 (use-package scala-mode
   :ensure t
   :interpreter ("scala" . scala-mode)
