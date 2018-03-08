@@ -469,7 +469,16 @@ cheatsheets all here.
   :diminish golden-ratio-mode
 :config (golden-ratio-mode))
 #+END_SRC
-
+*** Eshell Configuration
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c e") 'eshell)
+;; Visual commands are commands which require a proper terminal.
+;; Eshell will run them in a term buffer when invoked.
+(setq eshell-visual-commands
+  '("less" "tmux" "htop" "top" "bash" "zsh" "fish"))
+(setq eshell-visual-subcommands
+  '(("git" "log" "l" "diff" "show")))
+#+END_SRC
 ** Themes
 
    I switch between a big number of themes, sometimes several times a
