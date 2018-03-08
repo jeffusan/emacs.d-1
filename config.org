@@ -128,7 +128,10 @@ cheatsheets all here.
   (use-package magit-gh-pulls
     :ensure t
     :init
-    (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)))
+    (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
+  :commands magit-status
+  :bind ("C-x g" . magit-status)
+)
 #+END_SRC
 
     There are several tricks I like to do with Magit.
