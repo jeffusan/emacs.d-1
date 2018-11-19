@@ -526,6 +526,12 @@ cheatsheets all here.
    number of languages previously:
 
 #+BEGIN_SRC emacs-lisp
+(use-package go-mode
+  :ensure t
+  :bind (("M-." . godef-jump)
+         ("M-," . pop-tag-mark)))
+(add-hook 'before-save-hook 'gofmt-before-save)
+
 (use-package ensime
   :ensure t
   :pin melpa-stable)
