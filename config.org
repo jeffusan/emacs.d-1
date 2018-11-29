@@ -526,15 +526,29 @@ cheatsheets all here.
    number of languages previously:
 
 #+BEGIN_SRC emacs-lisp
+(use-package go-autocomplete
+  :ensure t)
+
 (use-package go-mode
   :ensure t
   :bind (("M-." . godef-jump)
-         ("M-," . pop-tag-mark)))
-(add-hook 'before-save-hook 'gofmt-before-save)
+         ("M-," . pop-tag-mark))
+  :init
+  (use-package go-eldoc
+    :config
+    (add-hook 'go-mode-hook 'go-eldoc-setup))
+  (use-package flycheck)
+  :config (auto-complete-mode 1)
+          (setq gofmt-command "goimports")
+          (add-hook 'before-save-hook 'gofmt-before-save)
+          (with-eval-after-load 'go-mode
+            (add-hook 'go-mode-hook 'go-autocomplete)))
+
 
 (use-package ensime
   :ensure t
-  :pin melpa-stable)
+  :pin melpa-stable
+  :config (setq ensime-startup-notification nil))
 
 (use-package scala-mode
   :ensure t
