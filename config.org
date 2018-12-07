@@ -21,7 +21,7 @@ cheatsheets all here.
 
 #+BEGIN_SRC emacs-lisp
 (setq exec-path (append exec-path '("/usr/local/bin")))
-(setq exec-path (append exec-path '("/Users/jeff/bin")))
+(setq exec-path (append exec-path '("/home/jeff/bin")))
 #+END_SRC
 
 *** plumbing
@@ -113,6 +113,12 @@ cheatsheets all here.
       (write-region (point-min)
                     (point-max)
                     my-saved-theme-filename))))
+
+;; if you make changes to config.org, simply M-x load-config to reload
+(defun load-config ()
+  (interactive)
+  (org-babel-load-file (expand-file-name (concat user-emacs-directory "config.org"))))
+
 #+END_SRC
 
 ** Tools
@@ -168,7 +174,6 @@ cheatsheets all here.
      to create a new PR from the existing changes.
 
 *** Projectile
-
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
   :ensure t
@@ -344,8 +349,10 @@ cheatsheets all here.
 #+BEGIN_SRC emacs-lisp
 (use-package org
   :ensure t
-  :bind (("C-c a a" . org-agenda)
-	 ("C-c c" . org-capture))
+  :bind (
+         ("C-c a a" . org-agenda)
+	 ("C-c c" . org-capture)
+  )
   :config
 
   (use-package org-bullets
@@ -525,10 +532,14 @@ cheatsheets all here.
    At the time of writing this, I mostly write scala, but I've used a
    number of languages previously:
 
+*** note about golang mode
+     My go-mode configuration makes use of *godef* for navigating goo.
+     information about godef is here: https://github.com/rogpeppe/godef
+     Something like `go get github/rogpeppe/godef` and then `go build` and then make sure the godef binary is in your path.
+     Note that `goimports`, on linux, requires another gool, `apt install golang-golang-x-tools`.
+     After installing, assuming goimports is in your path,  saving a file will call gofmt and goimports.
+     Do the same with https://github.com/mdempsky/gocode
 #+BEGIN_SRC emacs-lisp
-(use-package go-autocomplete
-  :ensure t)
-
 (use-package go-mode
   :ensure t
   :bind (("M-." . godef-jump)
@@ -537,12 +548,14 @@ cheatsheets all here.
   (use-package go-eldoc
     :config
     (add-hook 'go-mode-hook 'go-eldoc-setup))
-  (use-package flycheck)
-  :config (auto-complete-mode 1)
-          (setq gofmt-command "goimports")
-          (add-hook 'before-save-hook 'gofmt-before-save)
-          (with-eval-after-load 'go-mode
-            (add-hook 'go-mode-hook 'go-autocomplete)))
+  (use-package go-complete
+    :ensure t
+    :config
+    (add-hook 'completion-at-point-functions 'go-complete-at-point))
+  (use-package flycheck
+    :config 
+      (setq gofmt-command "goimports")
+      (add-hook 'before-save-hook 'gofmt-before-save)))
 
 
 (use-package ensime
@@ -558,43 +571,7 @@ cheatsheets all here.
 
 (use-package idris-mode :ensure t)
 (use-package nix-mode :ensure t)
-(use-package groovy-mode :ensure t)
 (use-package json-mode :ensure t)
-(use-package haskell-mode
-  :ensure t
-  :mode "\\.hs\\'"
-  :commands haskell-mode
-  :bind (("C-c C-s" . fix-imports)
-	 ("C-c C-c" . haskell-compile)
-	 ("C-,"     . haskell-move-nested-left)
-	 ("C-."     . haskell-move-nested-right)
-	 ("C-c C-." . haskell-mode-format-imports)
-	 ("s-i"     . haskell-navigate-imports)
-	 ("C-c C-l" . haskell-process-load-or-reload)
-	 ("C-`"     . haskell-interactive-bring)
-	 ("C-c C-t" . haskell-process-do-type)
-	 ("C-c C-i" . haskell-process-do-info)
-	 ("C-c C-c" . haskell-process-cabal-build)
-	 ("C-c C-k" . haskell-interactive-mode-clear)
-	 ("C-c c"   . haskell-process-cabal))
-  :config
-  (custom-set-variables
-   '(haskell-ask-also-kill-buffers nil)
-   '(haskell-interactive-popup-errors nil)
-   '(haskell-process-auto-import-loaded-modules t)
-   '(haskell-process-log t)
-   '(haskell-process-suggest-remove-import-lines  t)
-   '(haskell-process-type (quote stack-ghci))
-   '(haskell-stylish-on-save t))
-
-
-  (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
-  (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-  (add-hook 'haskell-mode-hook 'flycheck-mode)
-  (add-hook 'haskell-mode-hook 'hindent-mode)
-  (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
-  (add-hook 'haskell-mode-hook (lambda ()
-  (add-hook 'before-save-hook 'haskell-mode-format-imports nil 'local))))
 (use-package markdown-mode :ensure t :mode "\\.md\\'")
 #+END_SRC
 
