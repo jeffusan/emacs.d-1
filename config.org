@@ -540,6 +540,10 @@ cheatsheets all here.
      After installing, assuming goimports is in your path,  saving a file will call gofmt and goimports.
      Do the same with https://github.com/mdempsky/gocode
 #+BEGIN_SRC emacs-lisp
+(defun auto-complete-for-go ()
+  (auto-complete-mode 1))
+  (add-hook 'go-mode-hook 'auto-complete-for-go)
+
 (use-package go-mode
   :ensure t
   :bind (("M-." . godef-jump)
@@ -551,7 +555,7 @@ cheatsheets all here.
   (use-package go-complete
     :ensure t
     :config
-    (add-hook 'completion-at-point-functions 'go-complete-at-point))
+    (add-hook 'go-mode-hook 'auto-complete-for-go))
   (use-package flycheck
     :config 
       (setq gofmt-command "goimports")
