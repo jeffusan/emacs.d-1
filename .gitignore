@@ -11,4 +11,9 @@ network-security.data
 ido.last
 .emacs-theme
 .mc-lists.el
+ac-comphist.dat
+eshell/
+session.*
+tramp
+var/
 

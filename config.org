@@ -561,22 +561,44 @@ cheatsheets all here.
       (setq gofmt-command "goimports")
       (add-hook 'before-save-hook 'gofmt-before-save)))
 
-
-(use-package ensime
-  :ensure t
-  :pin melpa-stable
-  :config (setq ensime-startup-notification nil))
-
-(use-package scala-mode
-  :ensure t
-  :interpreter ("scala" . scala-mode)
-  :config
-  (use-package sbt-mode :ensure t))
-
 (use-package idris-mode :ensure t)
 (use-package nix-mode :ensure t)
 (use-package json-mode :ensure t)
 (use-package markdown-mode :ensure t :mode "\\.md\\'")
+
+(use-package haskell-mode
+  :ensure t
+  :mode "\\.hs\\'"
+  :commands haskell-mode
+  :bind (("C-c C-s" . fix-imports)
+	 ("C-c C-c" . haskell-compile)
+	 ("C-,"     . haskell-move-nested-left)
+	 ("C-."     . haskell-move-nested-right)
+	 ("C-c C-." . haskell-mode-format-imports)
+	 ("s-i"     . haskell-navigate-imports)
+	 ("C-c C-l" . haskell-process-load-or-reload)
+	 ("C-`"     . haskell-interactive-bring)
+	 ("C-c C-t" . haskell-process-do-type)
+	 ("C-c C-i" . haskell-process-do-info)
+	 ("C-c C-c" . haskell-process-cabal-build)
+	 ("C-c C-k" . haskell-interactive-mode-clear)
+	 ("C-c c"   . haskell-process-cabal))
+  :config
+  (custom-set-variables
+   '(haskell-ask-also-kill-buffers nil)
+   '(haskell-interactive-popup-errors nil)
+   '(haskell-process-auto-import-loaded-modules t)
+   '(haskell-process-log t)
+   '(haskell-process-suggest-remove-import-lines  t)
+   '(haskell-process-type (quote stack-ghci))
+   '(haskell-stylish-on-save t))
+  (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+  (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+  (add-hook 'haskell-mode-hook 'flycheck-mode)
+;;  (add-hook 'haskell-mode-hook 'hindent-mode)
+  (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
+  (add-hook 'haskell-mode-hook (lambda ()
+  (add-hook 'before-save-hook 'haskell-mode-format-imports nil 'local))))
 #+END_SRC
 
 ** Some more configuration for when all packages has been loaded
